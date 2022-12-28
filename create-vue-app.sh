@@ -29,12 +29,19 @@ docker run --rm -v "${PWD}:/$(basename `pwd`)" -w "/$(basename `pwd`)" -it docke
   \"vuex\": true\
 }' -f app"
 
-touch run.sh
+touch dev.sh
+touch build.sh
 
 echo "docker run --rm -d -v \"${PWD}/app:/app\" \
   -p $port_number:$port_number \
   -w \"/app\" \
   --name \"$input_directory\" \
-  -it dockerized-vue sh -c \"PORT=$port_number yarn serve\"" >> run.sh
+  -it dockerized-vue sh -c \"PORT=$port_number npm serve\"" >> dev.sh
 
-chmod 0755 run.sh
+echo "docker run --rm -d -v \"${PWD}/app:/app\" \
+  -p $port_number:$port_number \
+  -w \"/app\" \
+  --name \"$input_directory\" \
+  -it dockerized-vue sh -c \"PORT=$port_number npm build\"" >> build.sh
+
+chmod 0755 dev.sh build.sh
